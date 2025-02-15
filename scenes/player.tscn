@@ -1,16 +1,40 @@
-[gd_scene load_steps=4 format=3 uid="uid://dn145wdgkd8uw"]
+[gd_scene load_steps=8 format=3 uid="uid://dn145wdgkd8uw"]
 
 [ext_resource type="Texture2D" uid="uid://7jkil6d7ylbl" path="res://assets/player.png" id="1_l6abp"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_udb5x"]
+[ext_resource type="PackedScene" uid="uid://cq7k03t5tm7o7" path="res://scenes/components/HealthComponent.tscn" id="3_hb8qx"]
+[ext_resource type="PackedScene" uid="uid://cwc7i0o7tt60r" path="res://scenes/components/SpeedComponent.tscn" id="3_ynq25"]
+[ext_resource type="PackedScene" uid="uid://tq1n80we14u6" path="res://scenes/components/HitboxComponent.tscn" id="5_3mu21"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_b0t31"]
-size = Vector2(32, 32)
+[sub_resource type="CircleShape2D" id="CircleShape2D_5i5hm"]
+radius = 16.0
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_kypog"]
+radius = 15.0
+
+[node name="Player" type="CharacterBody2D" groups=["players"]]
+collision_layer = 2
+collision_mask = 7
+motion_mode = 1
+safe_margin = 0.02
 script = ExtResource("1_udb5x")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_l6abp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_b0t31")
+visible = false
+shape = SubResource("CircleShape2D_5i5hm")
+
+[node name="SpeedComponent" parent="." instance=ExtResource("3_ynq25")]
+
+[node name="HealthComponent" parent="." instance=ExtResource("3_hb8qx")]
+
+[node name="HitboxComponent" parent="." instance=ExtResource("5_3mu21")]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+shape = SubResource("CircleShape2D_kypog")
+
+[connection signal="no_health" from="HealthComponent" to="." method="_on_health_component_no_health"]

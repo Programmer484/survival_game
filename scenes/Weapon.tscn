@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://sdp3mlbyv8n3"]
+
+[ext_resource type="Texture2D" uid="uid://dkws3vh7ihju2" path="res://assets/sword.png" id="1_g0esn"]
+[ext_resource type="Script" path="res://weapon.gd" id="1_p3mj0"]
+[ext_resource type="PackedScene" uid="uid://di47u2i6j6vfi" path="res://scenes/components/DamageAreaComponent.tscn" id="2_8iamf"]
+
+[node name="Weapon" type="Node2D"]
+script = ExtResource("1_p3mj0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_g0esn")
+
+[node name="DamageAreaComponent" parent="." instance=ExtResource("2_8iamf")]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DamageAreaComponent"]
+polygon = PackedVector2Array(12, -12, 12, -9, -1, 4, -4, 1, 9, -12)

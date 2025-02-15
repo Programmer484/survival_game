@@ -1,0 +1,56 @@
+[gd_scene load_steps=11 format=3 uid="uid://caer5ago666k7"]
+
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_dk5lx"]
+[ext_resource type="Texture2D" uid="uid://dxyyayutcok63" path="res://assets/enemies.png" id="2_nx4x8"]
+[ext_resource type="PackedScene" uid="uid://dbl0geaq55f2q" path="res://scenes/components/PathfindComponent.tscn" id="3_865uq"]
+[ext_resource type="PackedScene" uid="uid://cwc7i0o7tt60r" path="res://scenes/components/SpeedComponent.tscn" id="3_rcati"]
+[ext_resource type="PackedScene" uid="uid://cq7k03t5tm7o7" path="res://scenes/components/HealthComponent.tscn" id="4_opbxs"]
+[ext_resource type="PackedScene" uid="uid://tq1n80we14u6" path="res://scenes/components/HitboxComponent.tscn" id="6_kx04w"]
+[ext_resource type="PackedScene" uid="uid://di47u2i6j6vfi" path="res://scenes/components/DamageAreaComponent.tscn" id="7_wgerh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rsiwt"]
+radius = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m2sfo"]
+radius = 15.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6b8xu"]
+radius = 18.0
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 7
+motion_mode = 1
+safe_margin = 0.02
+script = ExtResource("1_dk5lx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_nx4x8")
+region_enabled = true
+region_rect = Rect2(32, 0, 32, 32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("CircleShape2D_rsiwt")
+
+[node name="SpeedComponent" parent="." instance=ExtResource("3_rcati")]
+
+[node name="HealthComponent" parent="." instance=ExtResource("4_opbxs")]
+
+[node name="PathfindComponent" parent="." instance=ExtResource("3_865uq")]
+
+[node name="HitboxComponent" parent="." instance=ExtResource("6_kx04w")]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+shape = SubResource("CircleShape2D_m2sfo")
+
+[node name="DamageAreaComponent" parent="." instance=ExtResource("7_wgerh")]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageAreaComponent"]
+shape = SubResource("CircleShape2D_6b8xu")
+
+[connection signal="no_health" from="HealthComponent" to="." method="_on_health_component_no_health"]
